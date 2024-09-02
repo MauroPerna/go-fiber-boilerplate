@@ -19,13 +19,10 @@ func NewUserService(db *database.DatabaseModule) *UserService {
 }
 
 func (s *UserService) GetAllUsers(c *fiber.Ctx) error {
-	// Obtener la colección de Owners desde la base de datos APP
 	collection := s.db.DatabaseService.GetCollection("APP", "owners")
 
-	// Crear un slice para almacenar los resultados
 	var owners []entities.Owner
 
-	// Ejecutar la consulta para obtener todos los documentos en la colección
 	cursor, err := collection.Find(context.Background(), bson.M{})
 	if err != nil {
 		log.Println("Error fetching owners:", err)
@@ -37,7 +34,6 @@ func (s *UserService) GetAllUsers(c *fiber.Ctx) error {
 	}
 	defer cursor.Close(context.Background())
 
-	// Iterar sobre el cursor y decodificar cada documento en el slice de owners
 	if err := cursor.All(context.Background(), &owners); err != nil {
 		log.Println("Error decoding owners:", err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -47,7 +43,6 @@ func (s *UserService) GetAllUsers(c *fiber.Ctx) error {
 		})
 	}
 
-	// Responder con la lista de owners
 	return c.JSON(fiber.Map{
 		"status":  "success",
 		"message": "Fetched all owners",
@@ -57,7 +52,6 @@ func (s *UserService) GetAllUsers(c *fiber.Ctx) error {
 
 func (s *UserService) GetUser(c *fiber.Ctx) error {
 	id := c.Params("id")
-	// Aquí puedes implementar la lógica para buscar un solo usuario por su ID si es necesario
 	return c.JSON(fiber.Map{
 		"status":  "success",
 		"message": "Get user by ID",

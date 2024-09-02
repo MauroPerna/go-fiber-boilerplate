@@ -22,7 +22,7 @@ func main() {
 		database.Module,
 		app.Module,
 		fx.Invoke(
-			startServer, // Invocar la función para iniciar el servidor
+			startServer,
 		),
 	)
 
@@ -36,7 +36,7 @@ func startServer(appModule *app.AppModule, lc fx.Lifecycle) {
 			log.Printf("server is running on port :%s", port)
 
 			go func() {
-				if err := appModule.FiberApp.Listen(":3000"); err != nil {
+				if err := appModule.FiberApp.Listen(":" + port); err != nil {
 					log.Fatalf("Failed to start server: %v", err)
 				}
 			}()
